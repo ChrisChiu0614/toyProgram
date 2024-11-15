@@ -6,28 +6,24 @@ void write_to_file(FILE* file);
 void read_to_file(FILE* file);
 
 
-int main(){
-    char fileName[100];
-    char mode[10];
-
-    // Step 1: Ask user for file name and mode
-    printf("Enter the file name: ");
-    scanf("%s", fileName);
+int main(int argc, char** argv){
+    if(argc != 3){
+        printf("Usage: %s <file_name> <mode (e.g., r, w, a, w+, a+) >\n", argv[0]);
+        return EXIT_FAILURE;
+    }
     
-    printf("Enter the mode (e.g., r, w, a, w+, a+): ");
-    scanf("%s", mode);
 
-    // Step 2: Open the file in the given mode
+    char* fileName = argv[1];
+    char* mode = argv[2];
+
+    // Open the file in the given mode
     FILE* file = fopen(fileName, mode);
     if(file==NULL){
         perror("Error opening file.");
         return EXIT_FAILURE;
     }
 
-    
-    while (getchar() != '\n');
-
-    // Step 3: Perform actions based on mode
+    // Perform actions based on mode
     if(strcmp(mode,"r")==0||strcmp(mode,"r+")==0){
         printf("\nReading from the file:\n");
         read_to_file(file);
@@ -36,7 +32,7 @@ int main(){
         write_to_file(file);
     }
 
-     // Step 4: Close the file
+     // Close the file
      fclose(file);
      printf("\nFile operation completed.\n");
      return EXIT_SUCCESS;
